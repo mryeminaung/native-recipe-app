@@ -48,6 +48,7 @@ export default function Recipes() {
 
 	useEffect(() => {
 		fetchCategories();
+		getRandomRecipe();
 	}, []);
 
 	useEffect(() => {
@@ -55,7 +56,7 @@ export default function Recipes() {
 	}, [currentCategory]);
 
 	const MainHeader = () => (
-		<View>
+		<>
 			<View className="flex-row justify-between items-center">
 				<Image
 					source={require("@/assets/images/lamb.png")}
@@ -71,57 +72,63 @@ export default function Recipes() {
 				/>
 			</View>
 
-			<FeaturedCard getRandomRecipe={getRandomRecipe} />
+			{randomRecipe && (
+				<FeaturedCard
+					randomRecipe={randomRecipe}
+					getRandomRecipe={getRandomRecipe}
+				/>
+			)}
 
-			<FlatList
-				data={categories}
-				horizontal
-				className="mb-3"
-				showsHorizontalScrollIndicator={false}
-				keyExtractor={(item) => item.idCategory}
-				renderItem={({ item }) => (
-					<CategoryCard
-						category={item}
-						currentCategory={currentCategory}
-						setCurrentCategory={setCurrentCategory}
-					/>
-				)}
-			/>
+			{categories.length > 0 && (
+				<FlatList
+					data={categories}
+					horizontal
+					className="mb-3"
+					showsHorizontalScrollIndicator={false}
+					keyExtractor={(item) => item.idCategory}
+					renderItem={({ item }) => (
+						<CategoryCard
+							category={item}
+							currentCategory={currentCategory}
+							setCurrentCategory={setCurrentCategory}
+						/>
+					)}
+				/>
+			)}
 
-			<Text className="text-2xl text-purple-900 font-bold mb-3">
+			<Text className="text-2xl text-purple-900 font-bold mb-5">
 				{currentCategory}
 			</Text>
-		</View>
+		</>
 	);
+
+	const EmptyRecipe = () =>
+		loading ? (
+			<View className="mt-20 items-center justify-center">
+				<ActivityIndicator
+					size="large"
+					color="#581c87"
+				/>
+				<Text className="mt-2 text-gray-500">Loading recipes...</Text>
+			</View>
+		) : (
+			<Text className="text-center text-gray-500 mt-10">No recipes found.</Text>
+		);
 
 	return (
 		<AppWrapper>
 			<FlatList
 				data={recipes}
+				ListHeaderComponent={<MainHeader />}
 				keyExtractor={(item) => item.idMeal}
 				showsVerticalScrollIndicator={false}
 				numColumns={2}
-				ListHeaderComponent={<MainHeader />}
 				columnWrapperStyle={{
 					justifyContent: "space-between",
 					marginBottom: 30,
 				}}
-				ListEmptyComponent={
-					loading ? (
-						<View className="mt-20 items-center justify-center">
-							<ActivityIndicator
-								size="large"
-								color="#581c87"
-							/>
-							<Text className="mt-2 text-gray-500">Loading recipes...</Text>
-						</View>
-					) : (
-						<Text className="text-center text-gray-500 mt-10">
-							No recipes found.
-						</Text>
-					)
-				}
-				renderItem={({ item }) => <RecipeCard />}
+				ListEmptyComponent={<EmptyRecipe />}
+				renderItem={({ item }) => <RecipeCard recipe={item} />}
 			/>
 		</AppWrapper>
 	);

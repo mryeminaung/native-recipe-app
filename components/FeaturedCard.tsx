@@ -4,12 +4,12 @@ import React from "react";
 import { ImageBackground, Pressable, Text, View } from "react-native";
 
 type featuredCardProps = {
-	recipe: any;
+	randomRecipe: any;
 	getRandomRecipe: () => void;
 };
 
 export default function FeaturedCard({
-	recipe,
+	randomRecipe,
 	getRandomRecipe,
 }: featuredCardProps) {
 	return (
@@ -25,7 +25,7 @@ export default function FeaturedCard({
 					opacity: 0.8,
 				}}
 				source={{
-					uri: "https://www.themealdb.com/images/category/breakfast.png",
+					uri: randomRecipe.strMealThumb,
 				}}
 			/>
 			<Text
@@ -34,8 +34,10 @@ export default function FeaturedCard({
 				Featured
 			</Text>
 			<View className="absolute left-5 bottom-5">
-				<Text className="text-3xl font-bold text-white">Fish Pie</Text>
-				<View className="flex-row items-center gap-x-5 justify-between">
+				<Text className="text-2xl line-clamp-1 font-bold text-white mb-3 self-start">
+					{randomRecipe.strMeal}
+				</Text>
+				<View className="flex-row items-center gap-x-5">
 					<View className="flex-row items-center gap-x-1.5">
 						<Ionicons
 							name="time-outline"
@@ -44,7 +46,7 @@ export default function FeaturedCard({
 						/>
 						<Text
 							style={{ color: COLORS.white }}
-							className="font-semibold text-md">
+							className="font-semibold text-sm">
 							30 minutes
 						</Text>
 					</View>
@@ -55,7 +57,7 @@ export default function FeaturedCard({
 							color={COLORS.white}
 						/>
 						<Text
-							className="font-semibold text-md"
+							className="font-semibold text-sm"
 							style={{ color: COLORS.white }}>
 							4
 						</Text>
@@ -67,9 +69,9 @@ export default function FeaturedCard({
 							color={COLORS.white}
 						/>
 						<Text
-							className="font-semibold text-md"
+							className="font-semibold text-sm"
 							style={{ color: COLORS.white }}>
-							British
+							{randomRecipe.strArea}
 						</Text>
 					</View>
 				</View>

@@ -12,6 +12,10 @@ export default function RootLayout() {
 				name="(tabs)"
 				options={{ headerShown: false }}
 			/>
+			<Stack.Screen
+				name="recipe/[recipeId]"
+				options={{ headerShown: false }}
+			/>
 		</Stack>
 	);
 }

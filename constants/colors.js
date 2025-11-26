@@ -97,4 +97,4 @@ export const THEMES = {
 	roseGold: roseGoldTheme,
 };
 
-export const COLORS = THEMES.ocean;
+export const COLORS = THEMES.purple;

@@ -6,7 +6,7 @@ export default function AppWrapper({ children }: any) {
 	return (
 		<SafeAreaView
 			style={{ backgroundColor: COLORS.background }}
-			className="py-8 px-5 flex-1">
+			className="pt-5 px-5 flex-1">
 			{children}
 		</SafeAreaView>
 	);
