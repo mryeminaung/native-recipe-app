@@ -1,24 +1,36 @@
 import { COLORS } from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
-export default function FavCard() {
+type FavCardProps = {
+	meal: {
+		idMeal: string;
+		strMeal: string;
+		strMealThumb: string;
+	};
+};
+
+export default function FavCard({ meal }: FavCardProps) {
+	const router = useRouter();
+
 	return (
-		<View
+		<Pressable
+			onPress={() => router.navigate(`/recipe/${meal.idMeal}`)}
 			className="bg-white rounded-3xl w-[48%] overflow-hidden"
 			style={{ borderColor: COLORS.border }}>
 			<Image
 				style={{ width: "100%", height: 120, resizeMode: "cover" }}
 				source={{
-					uri: "https://www.themealdb.com/images/media/meals/li30ck1763281992.jpg",
+					uri: meal.strMealThumb,
 				}}
 			/>
 			<View className="p-3">
 				<Text
 					className="line-clamp-2 text-xl font-bold mb-2"
 					style={{ color: COLORS.primary }}>
-					Creamy Tomato Soup
+					{meal.strMeal}
 				</Text>
 				<View className="flex-row items-center justify-between">
 					<View className="flex-row items-center gap-x-1.5">
@@ -47,6 +59,6 @@ export default function FavCard() {
 					</View>
 				</View>
 			</View>
-		</View>
+		</Pressable>
 	);
 }

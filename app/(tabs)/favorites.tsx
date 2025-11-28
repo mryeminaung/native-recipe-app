@@ -1,6 +1,7 @@
 import AppWrapper from "@/components/AppWrapper";
 import FavCard from "@/components/FavCard";
 import { COLORS } from "@/constants/colors";
+import { useFavStore } from "@/stores/useFavStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -8,6 +9,8 @@ import { FlatList, Text, View } from "react-native";
 
 export default function favorites() {
 	const router = useRouter();
+	const favRecipes = useFavStore((state) => state.favorites);
+
 	return (
 		<AppWrapper>
 			<View className="mb-5 flex-row items-center justify-between">
@@ -23,11 +26,11 @@ export default function favorites() {
 			<FlatList
 				columnWrapperStyle={{
 					justifyContent: "space-between",
-					marginBottom: 20,
+					marginBottom: 30,
 				}}
-				data={[1, 2, 3]}
+				data={favRecipes}
 				numColumns={2}
-				renderItem={({ item }) => <FavCard />}
+				renderItem={({ item }) => <FavCard meal={item} />}
 			/>
 		</AppWrapper>
 	);

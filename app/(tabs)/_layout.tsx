@@ -1,9 +1,11 @@
 import { COLORS } from "@/constants/colors";
+import { useFavStore } from "@/stores/useFavStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
 import React from "react";
 export default function TabLayout() {
+	const favRecipes = useFavStore((state) => state.favorites).length;
 	return (
 		<Tabs
 			screenOptions={{
@@ -58,6 +60,7 @@ export default function TabLayout() {
 				options={{
 					headerShown: false,
 					title: "Favorites",
+					tabBarBadge: favRecipes > 0 ? favRecipes : undefined,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "heart-sharp" : "heart-outline"}

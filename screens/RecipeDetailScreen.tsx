@@ -1,6 +1,7 @@
 import Ingredients from "@/components/Ingredients";
 import Instructions from "@/components/Instructions";
 import { COLORS } from "@/constants/colors";
+import { useFavStore } from "@/stores/useFavStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -38,6 +39,11 @@ type RecipeDetailScreenProps = {
 
 export default function RecipeDetailScreen({ meal }: RecipeDetailScreenProps) {
 	const router = useRouter();
+	const toggleFav = useFavStore((state) => state.toggleFav);
+	const favRecipes = useFavStore((state) => state.favorites);
+	const favMealIds = favRecipes.map((recipe) => recipe.idMeal);
+
+	const isFavMeal = favMealIds.includes(meal.idMeal);
 
 	const parseIngredients = (meal: Meal): Ingredient[] => {
 		const ingredients: Ingredient[] = [];
@@ -96,15 +102,19 @@ export default function RecipeDetailScreen({ meal }: RecipeDetailScreenProps) {
 							<Ionicons
 								onPress={() => router.navigate("..")}
 								name="arrow-back"
-								size={18}
-								className="p-2 rounded-full bg-black opacity-60"
-								color="white"
+								size={20}
+								className="p-4 rounded-full bg-gray-300"
+								color="black"
 							/>
 							<Ionicons
-								name="bookmark-outline"
-								size={18}
+								onPress={() => {
+									const { idMeal, strMeal, strMealThumb } = meal;
+									toggleFav({ idMeal, strMeal, strMealThumb });
+								}}
+								name={isFavMeal ? "bookmark" : "bookmark-outline"}
+								size={20}
 								style={{ backgroundColor: COLORS.primary }}
-								className="p-2 rounded-full"
+								className="p-4 rounded-full"
 								color="white"
 							/>
 						</View>
@@ -202,7 +212,10 @@ export default function RecipeDetailScreen({ meal }: RecipeDetailScreenProps) {
 					{/* Favorite */}
 					<Pressable
 						style={{ backgroundColor: COLORS.primary }}
-						onPress={() => console.log("Save to Fav")}
+						onPress={() => {
+							const { idMeal, strMeal, strMealThumb } = meal;
+							toggleFav({ idMeal, strMeal, strMealThumb });
+						}}
 						className="mb-8 mt-3 py-4 gap-x-2 rounded-2xl flex-row items-center justify-center">
 						<Ionicons
 							name="heart"
@@ -211,7 +224,7 @@ export default function RecipeDetailScreen({ meal }: RecipeDetailScreenProps) {
 							color="white"
 						/>
 						<Text className="text-white font-bold text-center text-md">
-							Add to Favorites
+							{isFavMeal ? "Remove from " : "Add to "} Favorites
 						</Text>
 					</Pressable>
 
